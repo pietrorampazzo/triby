@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-09-23T12:18:24.210Z",
+  "dryRun": true,
+  "imageAttached": "C:\\Users\\Pietro\\triby\\whatsapp\\assets\\barsi_dividendos_inteligentes.png",
+  "total": 13,
+  "delaySeconds": 15,
+  "successCount": 13,
+  "failCount": 0,
+  "results": [
+    {
+      "id": 1,
+      "name": "JP Networking Black ♟️",
+      "jid": "120363328129100867@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:24.500Z"
+    },
+    {
+      "id": 2,
+      "name": "Construindo uma Startup #2",
+      "jid": "120363419625067096@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:25.508Z"
+    },
+    {
+      "id": 3,
+      "name": "ACE NET BUSINESS",
+      "jid": "5511975922582-1592239710@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:26.517Z"
+    },
+    {
+      "id": 4,
+      "name": "ILUMINANDO CONEXÕES",
+      "jid": "120363423341501332@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:27.527Z"
+    },
+    {
+      "id": 5,
+      "name": "Lojistas de Direita 🇧🇷",
+      "jid": "5512981128451-1583502334@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:28.543Z"
+    },
+    {
+      "id": 6,
+      "name": "The Society Creator Comun.",
+      "jid": "120363422261662575@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:29.547Z"
+    },
+    {
+      "id": 7,
+      "name": "Ais Livres Vl",
+      "jid": "5511992226744-1611263507@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:30.555Z"
+    },
+    {
+      "id": 8,
+      "name": "NJE - Núcleo Jovem GRU",
+      "jid": "120363025686868832@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:31.562Z"
+    },
+    {
+      "id": 9,
+      "name": "Comunidade Agentes Apex",
+      "jid": "120363043969599077@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:32.567Z"
+    },
+    {
+      "id": 10,
+      "name": "MBr - Hub SP São Paulo",
+      "jid": "5511996099012-1525906925@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:33.585Z"
+    },
+    {
+      "id": 11,
+      "name": "ASSEAG ACADEMY",
+      "jid": "120363171953633718@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:34.588Z"
+    },
+    {
+      "id": 12,
+      "name": "® Registro de MARCAS & PATENTES 🔐 🇧🇷🌎",
+      "jid": "5511964502842-1569532703@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:35.596Z"
+    },
+    {
+      "id": 13,
+      "name": "JP Memeworking",
+      "jid": "5521971413564-1599916186@g.us",
+      "status": "SIMULADO",
+      "sentAt": "2026-09-23T12:18:36.611Z"
+    }
+  ]
+}

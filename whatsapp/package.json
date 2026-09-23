@@ -1,0 +1,23 @@
+{
+  "name": "triby-whatsapp-baileys",
+  "version": "1.0.0",
+  "description": "Conexão WhatsApp via API Baileys com pareamento via código",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "baileys",
+    "automation",
+    "pairing-code"
+  ],
+  "author": "Triby",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.9",
+    "dotenv": "^16.4.7",
+    "pino": "^9.6.0"
+  }
+}

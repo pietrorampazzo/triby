@@ -1,0 +1,28 @@
+# Ambientes Virtuais Python
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node / Baileys
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Segredos, Chaves de Sessão e Credenciais (CRÍTICO)
+**/auth_info_baileys/
+auth_info_baileys/
+credentials.json
+token.json
+.env
+*.env.local
+
+# Logs e arquivos temporários do SO
+*.log
+.DS_Store
+Thumbs.db

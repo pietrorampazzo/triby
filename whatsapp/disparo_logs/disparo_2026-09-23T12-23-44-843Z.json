@@ -1,0 +1,115 @@
+{
+  "timestamp": "2026-09-23T12:19:16.129Z",
+  "dryRun": false,
+  "imageAttached": "C:\\Users\\Pietro\\triby\\whatsapp\\assets\\barsi_dividendos_inteligentes.png",
+  "total": 13,
+  "delaySeconds": 15,
+  "successCount": 12,
+  "failCount": 1,
+  "results": [
+    {
+      "id": 1,
+      "name": "JP Networking Black ♟️",
+      "jid": "120363328129100867@g.us",
+      "messageId": "3EB0AEBAEAE6AFB638A1EF",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:19:28.697Z"
+    },
+    {
+      "id": 2,
+      "name": "Construindo uma Startup #2",
+      "jid": "120363419625067096@g.us",
+      "status": "FALHA",
+      "error": "forbidden",
+      "sentAt": "2026-09-23T12:19:44.801Z"
+    },
+    {
+      "id": 3,
+      "name": "ACE NET BUSINESS",
+      "jid": "5511975922582-1592239710@g.us",
+      "messageId": "3EB06EB2C988F67AC69FE2",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:20:17.227Z"
+    },
+    {
+      "id": 4,
+      "name": "ILUMINANDO CONEXÕES",
+      "jid": "120363423341501332@g.us",
+      "messageId": "3EB0A2E297BB3456043746",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:20:43.878Z"
+    },
+    {
+      "id": 5,
+      "name": "Lojistas de Direita 🇧🇷",
+      "jid": "5512981128451-1583502334@g.us",
+      "messageId": "3EB06D0162FC9E755F91A7",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:21:07.919Z"
+    },
+    {
+      "id": 6,
+      "name": "The Society Creator Comun.",
+      "jid": "120363422261662575@g.us",
+      "messageId": "3EB0129C51463EBFBDAEE2",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:21:29.813Z"
+    },
+    {
+      "id": 7,
+      "name": "Ais Livres Vl",
+      "jid": "5511992226744-1611263507@g.us",
+      "messageId": "3EB0FD12D480B466098296",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:21:51.474Z"
+    },
+    {
+      "id": 8,
+      "name": "NJE - Núcleo Jovem GRU",
+      "jid": "120363025686868832@g.us",
+      "messageId": "3EB0C3FB3363559F0E25ED",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:22:10.546Z"
+    },
+    {
+      "id": 9,
+      "name": "Comunidade Agentes Apex",
+      "jid": "120363043969599077@g.us",
+      "messageId": "3EB004F83225B176E9A9ED",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:22:30.664Z"
+    },
+    {
+      "id": 10,
+      "name": "MBr - Hub SP São Paulo",
+      "jid": "5511996099012-1525906925@g.us",
+      "messageId": "3EB0E27714BA15A7957E16",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:22:51.047Z"
+    },
+    {
+      "id": 11,
+      "name": "ASSEAG ACADEMY",
+      "jid": "120363171953633718@g.us",
+      "messageId": "3EB0C1434B9D926DDB1D78",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:23:08.682Z"
+    },
+    {
+      "id": 12,
+      "name": "® Registro de MARCAS & PATENTES 🔐 🇧🇷🌎",
+      "jid": "5511964502842-1569532703@g.us",
+      "messageId": "3EB0543D8F1B610B3ABCF6",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:23:27.522Z"
+    },
+    {
+      "id": 13,
+      "name": "JP Memeworking",
+      "jid": "5521971413564-1599916186@g.us",
+      "messageId": "3EB02977A59EDDF0DD948B",
+      "status": "SUCESSO",
+      "sentAt": "2026-09-23T12:23:44.843Z"
+    }
+  ]
+}
