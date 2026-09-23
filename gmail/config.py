@@ -32,7 +32,7 @@ SCOPES = [
 # Configurações de Envio e Cadência
 INTERVAL_SECONDS = int(os.getenv("INTERVAL_SECONDS", "60"))
 TIMEZONE_NAME = os.getenv("TIMEZONE", "America/Sao_Paulo")
-EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "Diagnóstico Estratégico - {empresa}")
+EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "💡Ei, sua empresa recuperou imposto ?")
 SENDER_NAME = os.getenv("SENDER_NAME", "")
 
 # Nomes esperados de Colunas
