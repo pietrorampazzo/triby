@@ -98,8 +98,16 @@ def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_m
     # Renderiza templates
     body_html, body_text = template_manager.render(pending_lead["raw_row"], sender_name=SENDER_NAME)
 
-    # Assunto personalizado
-    subject = EMAIL_SUBJECT.replace("{empresa}", empresa_lead).replace("{nome}", nome_lead)
+    # Assunto personalizado com suporte a várias tags
+    subject = EMAIL_SUBJECT
+    for key, val in [
+        ("empresa", empresa_lead),
+        ("nome", nome_lead),
+        ("cidade", pending_lead["raw_row"].get("Cidade", "")),
+        ("nicho", pending_lead["raw_row"].get("Nicho / Segmento", "")),
+    ]:
+        subject = subject.replace(f"{{{key}}}", str(val)).replace(f"{{{key.capitalize()}}}", str(val))
+        subject = subject.replace(f"[{key}]", str(val)).replace(f"[{key.capitalize()}]", str(val))
 
     # Dispara e-mail via Gmail API
     print(f"[*] Enviando e-mail via Gmail para: {email_to}...")
@@ -210,6 +218,12 @@ def main():
         action="store_true",
         help="Testa credenciais, conexões com Gmail e Google Sheets e exibe mapeamento de colunas.",
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Número máximo de e-mails enviados antes de encerrar (0 = sem limite/infinito).",
+    )
 
     args = parser.parse_args()
 
@@ -245,10 +259,12 @@ def main():
 
     # Modo LOOP contínuo (envio a cada 1 minuto)
     interval = args.interval
-    print(f"[*] Executando em MODO LOOP contínuo (intervalo de {interval}s / 1 minuto entre disparos).")
+    limit_info = f" (Limite: {args.limit} e-mails)" if args.limit > 0 else " (Sem limite de quantidade)"
+    print(f"[*] Executando em MODO LOOP contínuo (intervalo de {interval}s / 1 minuto entre disparos){limit_info}.")
     print("[*] Pressione Ctrl+C a qualquer momento para encerrar com segurança.\n")
 
     cycle_count = 0
+    sent_count = 0
     try:
         while True:
             cycle_count += 1
@@ -256,6 +272,16 @@ def main():
             start_time = time.time()
 
             sent = run_cycle(sheets_client, gmail_client, template_manager, check_only=args.check_only)
+
+            if sent:
+                sent_count += 1
+                if args.limit > 0:
+                    print(f"[*] Progresso do MVP: {sent_count}/{args.limit} e-mail(s) enviado(s).")
+                    if sent_count >= args.limit:
+                        print("\n" + "=" * 65)
+                        print(f"[SUCESSO] META ATINGIDA: {args.limit} e-mails do MVP enviados e registrados!")
+                        print("=" * 65 + "\n")
+                        break
 
             elapsed = time.time() - start_time
             sleep_time = max(0.0, interval - elapsed)

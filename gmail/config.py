@@ -21,6 +21,8 @@ TEMPLATE_TXT = TEMPLATES_DIR / "email_template.txt"
 SCOPES = [
     # Acesso completo para ler e atualizar valores na planilha
     "https://www.googleapis.com/auth/spreadsheets",
+    # Acesso ao Google Drive
+    "https://www.googleapis.com/auth/drive",
     # Envio de e-mails em nome do usuário
     "https://www.googleapis.com/auth/gmail.send",
     # Leitura e busca de mensagens na caixa de entrada para checar respostas dos leads

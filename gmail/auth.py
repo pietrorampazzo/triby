@@ -1,5 +1,14 @@
 import sys
 from pathlib import Path
+
+# Garante saída UTF-8 no Windows
+if sys.stdout.encoding != "utf-8":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -77,8 +86,15 @@ def get_gmail_service(creds: Credentials = None):
     return build("gmail", "v1", credentials=creds)
 
 
+def get_drive_service(creds: Credentials = None):
+    """Retorna o serviço da Google Drive API v3."""
+    if not creds:
+        creds = get_credentials()
+    return build("drive", "v3", credentials=creds)
+
+
 def get_google_services():
-    """Retorna ambos os serviços (sheets, gmail) com uma única verificação de credenciais."""
+    """Retorna os serviços (sheets, gmail, drive) com uma única verificação de credenciais."""
     creds = get_credentials()
     sheets = build("sheets", "v4", credentials=creds)
     gmail = build("gmail", "v1", credentials=creds)

@@ -23,21 +23,28 @@ class TemplateManager:
         Substitui as variáveis nos templates com dados do lead.
         Retorna (rendered_subject, rendered_html, rendered_text).
         """
-        # Trata nome
-        full_name = lead_data.get("Nome") or lead_data.get("nome") or lead_data.get("Contato") or ""
-        first_name = full_name.strip().split()[0] if full_name.strip() else "Prezado(a)"
-
         # Trata empresa
         company = lead_data.get("Empresa") or lead_data.get("empresa") or lead_data.get("Negócio") or "sua empresa"
 
+        # Trata nome (se não houver nome específico de pessoa, usa o nome da Empresa)
+        full_name = lead_data.get("Nome") or lead_data.get("nome") or lead_data.get("Contato") or ""
+        if full_name.strip():
+            first_name = full_name.strip().split()[0]
+        else:
+            first_name = company if company and company != "sua empresa" else "Equipe"
+
         # Remetente
-        remetente = sender_name or SENDER_NAME or "Equipe de Novos Negócios"
+        remetente = sender_name or SENDER_NAME or "Equipe Valor Fiscal"
 
         context = {
             "nome": first_name,
             "nome_completo": full_name or first_name,
             "empresa": company,
             "email": lead_data.get("E-mail") or lead_data.get("email") or "",
+            "cidade": lead_data.get("Cidade") or lead_data.get("cidade") or "",
+            "nicho": lead_data.get("Nicho / Segmento") or lead_data.get("nicho") or "",
+            "cnae": lead_data.get("CNAE Principal") or lead_data.get("cnae") or "",
+            "gancho": lead_data.get("Gancho de Abordagem") or lead_data.get("gancho") or "",
             "remetente": remetente,
         }
 
