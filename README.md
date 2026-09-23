@@ -8,12 +8,13 @@ Projeto integrado de prospecção e comunicação para captação e diagnóstico
 
 ### 1. 📧 [Pasta `gmail/`](file:///c:/Users/Pietro/triby/gmail)
 Automação de e-mails conectada ao **Google Workspace** e **Google Sheets**:
-- Disparo de 1 e-mail por minuto (cadência anti-spam).
+- Conectado à planilha unificada de Leads e Respostas de Formulário.
+- Disparo de 1 e-mail por minuto (cadência anti-spam) com templates segmentados por CNAE.
 - Preenchimento automático na planilha da coluna **"Hora de Envio"** (`xx/xx/xxxx às yy:yy`).
-- Atualização do **"Status do Contato"** para **`Em Contato`**.
+- Atualização do **"Status do Contato"** para **`Em Contato`** no envio e **`Diagnóstico Aceito`** quando o lead responde ao formulário.
 - Monitoramento contínuo de respostas dos leads na caixa de entrada do Gmail.
 - Templates formatados em HTML e texto puro para a **Valor Fiscal**.
-- Scripts prontos: `run_loop.bat`, `run_once.bat`, `test_connection.bat`.
+- Scripts prontos: `run_mvp_10.bat`, `run_loop.bat`, `run_once.bat`, `test_connection.bat`.
 
 ### 2. 💬 [Pasta `whatsapp/`](file:///c:/Users/Pietro/triby/whatsapp)
 Conexão direta com o **WhatsApp** via biblioteca **Baileys**:

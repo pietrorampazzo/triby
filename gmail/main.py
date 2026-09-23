@@ -16,10 +16,13 @@ if sys.stdout.encoding != "utf-8":
 from config import (
     SPREADSHEET_ID,
     SHEET_GID,
+    FORM_RESPONSES_GID,
+    FORM_RESPONSES_TAB,
     INTERVAL_SECONDS,
     TIMEZONE_NAME,
     SENDER_NAME,
     STATUS_EM_CONTATO,
+    STATUS_DIAGNOSTICO_ACEITO,
     STATUS_NOVO,
 )
 from auth import get_google_services, get_authenticated_user_email
@@ -40,15 +43,16 @@ def get_current_time_str() -> str:
 
 def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_manager: TemplateManager, check_only: bool = False) -> bool:
     """
-    Executa um ciclo do processo:
-    1. Verifica respostas na caixa de entrada para leads já contactados.
-    2. Envia 1 e-mail para o próximo lead pendente (se não estiver em check_only).
+    Executa um ciclo completo do processo:
+    1. Verifica respostas na caixa de entrada do Gmail para leads contatados.
+    2. Verifica formulário de diagnóstico na aba 'Respostas ao formulário 1' e atualiza 'Diagnóstico Aceito'.
+    3. Envia 1 e-mail para o próximo lead pendente da aba 'LEADS' (se não estiver em check_only).
     Retorna True se um e-mail foi enviado, False caso contrário.
     """
     timestamp_log = datetime.now().strftime("%H:%M:%S")
     print(f"\n[{timestamp_log}] === Iniciando ciclo de processamento ===")
 
-    # 1. VERIFICAÇÃO DE RESPOSTAS NA CAIXA DE ENTRADA
+    # 1. VERIFICAÇÃO DE RESPOSTAS NA CAIXA DE ENTRADA DO GMAIL
     print("[*] Conferindo caixa de entrada do Gmail por respostas de leads...")
     contacted_leads = sheets_client.get_contacted_leads()
     if contacted_leads:
@@ -56,7 +60,7 @@ def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_m
         replies = gmail_client.check_replies_for_leads(contacted_leads)
         if replies:
             print("\n" + "=" * 65)
-            print(f"[!!!] ATENÇÃO: {len(replies)} NOVA(S) RESPOSTA(S) IDENTIFICADA(S)!")
+            print(f"[!!!] ATENÇÃO: {len(replies)} NOVA(S) RESPOSTA(S) IDENTIFICADA(S) NO GMAIL!")
             print("=" * 65)
             for r in replies:
                 lead = r["lead"]
@@ -71,12 +75,28 @@ def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_m
     else:
         print("[*] Nenhum lead em contato para monitorar respostas.")
 
+    # 2. VERIFICAÇÃO DE PREENCHIMENTOS DO FORMULÁRIO (NOVA PLANILHA INTEGRADA)
+    print(f"[*] Conferindo preenchimentos do formulário na aba '{sheets_client.form_title}'...")
+    conversions = sheets_client.check_form_responses()
+    if conversions:
+        print("\n" + "=" * 65)
+        print(f"[🎉] CONVERSÃO IDENTIFICADA: {len(conversions)} NOVO(S) DIAGNÓSTICO(S) ACEITO(S)!")
+        print("=" * 65)
+        for c in conversions:
+            print(f"  • Empresa: {c['empresa']} (Linha {c['row_number']})")
+            print(f"    CNPJ: {c['cnpj']} | Contratante: {c.get('contratante', '')}")
+            print(f"    Data de Envio: {c.get('data', '')}")
+            print(f"    Status na aba '{sheets_client.sheet_title}' atualizado para: '{STATUS_DIAGNOSTICO_ACEITO}'")
+            print("-" * 65)
+    else:
+        print("[*] Nenhuma nova conversão do formulário pendente de atualização.")
+
     if check_only:
         print("[*] Modo 'apenas checagem' ativado. Nenhum e-mail será enviado.")
         return False
 
-    # 2. SELEÇÃO E ENVIO DE E-MAIL PARA O PRÓXIMO LEAD PENDENTE
-    print("[*] Buscando próximo lead pendente na planilha...")
+    # 3. SELEÇÃO E ENVIO DE E-MAIL PARA O PRÓXIMO LEAD PENDENTE
+    print(f"[*] Buscando próximo lead pendente na aba '{sheets_client.sheet_title}'...")
     try:
         pending_lead = sheets_client.get_next_pending_lead()
     except Exception as e:
@@ -94,20 +114,11 @@ def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_m
 
     print(f"\n[>>>] Lead Selecionado: {nome_lead} | Empresa: {empresa_lead} | E-mail: {email_to} (Linha {row_num})")
 
-    # Renderiza templates
+    # Renderiza templates (específico para o nicho/CNAE ou fallback institucional)
     subject, body_html, body_text = template_manager.render(pending_lead["raw_row"], sender_name=SENDER_NAME)
 
     if subject is None:
-        print(f"[!] Lead {nome_lead} ignorado (CNAE '{pending_lead.get('cnae')}' não mapeado nos templates).")
-        # Marca como ignorado na planilha para não travar a fila
-        try:
-            sheets_client.update_lead_sent(
-                row_number=row_num,
-                send_time_str="---",
-                new_status="Ignorado - CNAE",
-            )
-        except Exception as e:
-            print(f"[ERRO] Falha ao marcar lead como ignorado na linha {row_num}: {e}")
+        print(f"[!] Lead {nome_lead} ignorado (impossível gerar template).")
         return False
 
     # Dispara e-mail via Gmail API
@@ -150,16 +161,17 @@ def test_environment(sheets_client: SheetsClient, gmail_client: GmailClient, use
     print("=" * 65)
     print(f"Conta Google Workspace Conectada: {user_email}")
     print(f"ID da Planilha: {SPREADSHEET_ID}")
-    print(f"Aba da Planilha: '{sheets_client.sheet_title}' (GID {sheets_client.gid})")
+    print(f"Aba Principal de Leads: '{sheets_client.sheet_title}' (GID {sheets_client.gid})")
+    print(f"Aba de Respostas do Formulário: '{sheets_client.form_title}' (GID {sheets_client.form_gid})")
 
-    # Lê cabeçalhos
+    # 1. Validação da aba de LEADS
     rows = sheets_client.read_all_rows()
     if not rows:
         print("[!] A planilha retornou 0 linhas.")
         return
 
     headers = rows[0]
-    print(f"\nCabeçalhos encontrados ({len(headers)} colunas):")
+    print(f"\nCabeçalhos encontrados na aba '{sheets_client.sheet_title}' ({len(headers)} colunas):")
     for i, h in enumerate(headers):
         print(f"  [{i}] {h}")
 
@@ -175,15 +187,33 @@ def test_environment(sheets_client: SheetsClient, gmail_client: GmailClient, use
     pending = sheets_client.get_next_pending_lead()
     contacted = sheets_client.get_contacted_leads()
 
-    print(f"\nResumo de Linhas:")
-    print(f"  • Total de linhas de dados: {total_dados}")
+    print(f"\nResumo de Linhas da aba '{sheets_client.sheet_title}':")
+    print(f"  • Total de leads cadastrados: {total_dados}")
     print(f"  • Leads já 'Em Contato': {len(contacted)}")
     if pending:
-        print(f"  • Próximo lead da fila: Linha {pending['row_number']} - {pending['email']} ({pending.get('nome')})")
+        print(f"  • Próximo lead da fila: Linha {pending['row_number']} - {pending['email']} ({pending.get('empresa')})")
     else:
         print("  • Próximo lead da fila: Nenhum lead pendente")
 
-    # Testa busca de caixa de entrada
+    # 2. Validação da aba de Respostas ao Formulário
+    print(f"\nVerificando aba '{sheets_client.form_title}'...")
+    try:
+        form_res = (
+            sheets_client.service.spreadsheets()
+            .values()
+            .get(spreadsheetId=sheets_client.spreadsheet_id, range=f"'{sheets_client.form_title}'!A1:Z10")
+            .execute()
+        )
+        form_rows = form_res.get("values", [])
+        if form_rows:
+            print(f"[OK] Aba de formulário conectada com sucesso ({len(form_rows)-1} resposta(s) encontrada(s)).")
+            print(f"     Cabeçalho do formulário: {form_rows[0]}")
+        else:
+            print("[!] Aba de formulário está vazia.")
+    except Exception as e:
+        print(f"[!] Erro ao acessar aba de respostas do formulário: {e}")
+
+    # 3. Testa busca de caixa de entrada do Gmail
     print("\nTestando busca no Gmail...")
     try:
         test_search = gmail_client.service.users().messages().list(userId="me", maxResults=1).execute()
@@ -277,10 +307,10 @@ def main():
             if sent:
                 sent_count += 1
                 if args.limit > 0:
-                    print(f"[*] Progresso do MVP: {sent_count}/{args.limit} e-mail(s) enviado(s).")
+                    print(f"[*] Progresso: {sent_count}/{args.limit} e-mail(s) enviado(s).")
                     if sent_count >= args.limit:
                         print("\n" + "=" * 65)
-                        print(f"[SUCESSO] META ATINGIDA: {args.limit} e-mails do MVP enviados e registrados!")
+                        print(f"[SUCESSO] META ATINGIDA: {args.limit} e-mails enviados e registrados!")
                         print("=" * 65 + "\n")
                         break
 

@@ -6,22 +6,27 @@ Sistema completo em Python integrado ao **Gmail** e **Google Sheets** para envio
 
 ## 📋 Funcionalidades
 
-1. **Leitura Inteligente da Planilha:**
-   - Conecta-se à planilha: `https://docs.google.com/spreadsheets/d/1V3W0KME53VqjGlhaFudJ2IkcmI0MlzPAoaJ4ZszSu9s/`
-   - Seleciona automaticamente a aba correta através do GID `421539945`.
-   - Identifica dinamicamente as colunas necessárias (`E-mail`, `Nome`, `Empresa`, `Hora de Envio`, `Status do Contato`).
+1. **Leitura Inteligente e Integrada da Planilha:**
+   - Conecta-se à planilha unificada: `https://docs.google.com/spreadsheets/d/1MCalRZ5CTg_VVSdlRGpGzPwFc96nfZHvLNaq_A7nLEA/`
+   - Aba Principal de Leads: **`LEADS`** (GID `343702656`).
+   - Aba de Formulário: **`Respostas ao formulário 1`** (GID `1712742275`).
+   - Mapeia dinamicamente: `Empresa`, `CNPJ`, `Cidade`, `Nicho / Segmento`, `CNAE Principal`, `E-mail`, `Telefone`, `Gancho de Abordagem`, `Hora de Envio`, `Status do Contato`.
 
-2. **Envio Cadenciado (Anti-Spam):**
+2. **Cruzamento Automático com o Formulário de Diagnóstico:**
+   - Monitora em tempo real a aba `Respostas ao formulário 1`.
+   - Quando um lead responde ao formulário, o sistema identifica pelo CNPJ e atualiza automaticamente o status para **`Diagnóstico Aceito`** na aba `LEADS`.
+
+3. **Envio Cadenciado e Segmentado por CNAE (Anti-Spam):**
    - Envia **1 e-mail por vez a cada 1 minuto** (60 segundos).
-   - Suporte a templates modernos em **HTML** e **Texto Puro (fallback)**.
-   - Variáveis dinâmicas: `{nome}`, `{empresa}`, `{email}`, etc.
+   - Templates hiper-segmentados por CNAE (Autopeças, Farmácias, Tabacarias, Bares/Restaurantes) e fallback institucional.
+   - Variáveis dinâmicas: `{nome}`, `{empresa}`, `{cidade}`, `{nicho}`, `{cnae}`, `{gancho}`, etc.
 
-3. **Atualização Automática na Planilha:**
-   - **Hora de Envio:** Preenche rigorosamente no padrão `"xx/xx/xxxx às yy:yy"` (ex: `22/09/2026 às 17:35`).
-   - **Status do Contato:** Atualiza para **`Em Contato`** (respeitando a lista suspensa da planilha).
+4. **Atualização Automática na Planilha:**
+   - **Hora de Envio:** Preenche rigorosamente no padrão `"xx/xx/xxxx às yy:yy"`.
+   - **Status do Contato:** Atualiza para **`Em Contato`** no envio e **`Diagnóstico Aceito`** na resposta do formulário.
 
-4. **Monitoramento Ativo da Caixa de Entrada:**
-   - A cada ciclo, consulta a caixa de entrada do Gmail para detectar se leads que já foram contatados responderam.
+5. **Monitoramento Ativo da Caixa de Entrada:**
+   - A cada ciclo, consulta a caixa de entrada do Gmail para detectar se leads contatados responderam.
    - Exibe alertas com trecho da mensagem, data, assunto e remetente.
 
 5. **Modos de Execução:**
@@ -126,12 +131,18 @@ Os modelos de mensagens ficam na pasta `templates/`:
 Você pode editar o arquivo `.env` para ajustar parâmetros a qualquer momento:
 
 ```env
-SPREADSHEET_ID=1V3W0KME53VqjGlhaFudJ2IkcmI0MlzPAoaJ4ZszSu9s
-SHEET_GID=421539945
+SPREADSHEET_ID=1MCalRZ5CTg_VVSdlRGpGzPwFc96nfZHvLNaq_A7nLEA
+SHEET_GID=343702656
+FORM_RESPONSES_GID=1712742275
+FORM_RESPONSES_TAB=Respostas ao formulário 1
 INTERVAL_SECONDS=60
 TIMEZONE=America/Sao_Paulo
-EMAIL_SUBJECT=Oportunidade e Diagnóstico Estratégico para {empresa}
+EMAIL_SUBJECT=💡Ei, sua empresa recuperou imposto ?
 SENDER_NAME=Pietro
+COL_CNAE=CNAE Principal
+COL_CNPJ=CNPJ
+COL_NICHO=Nicho / Segmento
+COL_GANCHO=Gancho de Abordagem
 COL_SEND_TIME=Hora de Envio
 COL_STATUS=Status do Contato
 ```
