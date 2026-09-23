@@ -17,6 +17,34 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 TEMPLATE_HTML = TEMPLATES_DIR / "email_template.html"
 TEMPLATE_TXT = TEMPLATES_DIR / "email_template.txt"
 
+# Configurações de CNAEs e Templates
+CNAE_GROUPS = {
+    "grupo1": {
+        "cnaes": ["4530-7/03", "4530-7/04", "4530-7/05"],
+        "subject": "dúvida sobre a apuração do das - {empresa}",
+        "template_txt": TEMPLATES_DIR / "grupo1_autopecas.txt",
+        "template_html": TEMPLATES_DIR / "grupo1_autopecas.html",
+    },
+    "grupo2": {
+        "cnaes": ["4771-7/01", "4771-7/02", "4771-7/03"],
+        "subject": "tributação de perfumaria e medicamentos / {empresa}",
+        "template_txt": TEMPLATES_DIR / "grupo2_farmacias.txt",
+        "template_html": TEMPLATES_DIR / "grupo2_farmacias.html",
+    },
+    "grupo3": {
+        "cnaes": ["4729-6/01", "4721-1/04"],
+        "subject": "impostos em duplicidade - {empresa}",
+        "template_txt": TEMPLATES_DIR / "grupo3_tabacarias.txt",
+        "template_html": TEMPLATES_DIR / "grupo3_tabacarias.html",
+    },
+    "grupo4": {
+        "cnaes": ["5611-2/01", "5611-2/02", "4712-1/00"],
+        "subject": "tributação de bebidas na {empresa}",
+        "template_txt": TEMPLATES_DIR / "grupo4_bares.txt",
+        "template_html": TEMPLATES_DIR / "grupo4_bares.html",
+    }
+}
+
 # Google OAuth Scopes
 SCOPES = [
     # Acesso completo para ler e atualizar valores na planilha
@@ -37,6 +65,7 @@ SENDER_NAME = os.getenv("SENDER_NAME", "")
 COL_EMAIL = os.getenv("COL_EMAIL", "E-mail")
 COL_NAME = os.getenv("COL_NAME", "Nome")
 COL_COMPANY = os.getenv("COL_COMPANY", "Empresa")
+COL_CNAE = os.getenv("COL_CNAE", "CNAE")
 COL_SEND_TIME = os.getenv("COL_SEND_TIME", "Hora de Envio")
 COL_STATUS = os.getenv("COL_STATUS", "Status do Contato")
 

@@ -1,0 +1,11 @@
+Olá, {nome}.
+
+Analisando o setor farmacêutico, noto que é muito comum o pagamento de impostos em duplicidade no Simples Nacional, especialmente sobre medicamentos e perfumaria, que já têm o imposto retido na indústria.
+
+Como atuo com revisões tributárias, costumo identificar e recuperar esses valores pagos a maior nos últimos 5 anos, de forma 100% administrativa.
+
+Você teria interesse em bater um papo rápido para entender como verificamos se a {empresa} tem esse crédito?
+
+Um abraço,
+
+{remetente}

@@ -18,7 +18,6 @@ from config import (
     SHEET_GID,
     INTERVAL_SECONDS,
     TIMEZONE_NAME,
-    EMAIL_SUBJECT,
     SENDER_NAME,
     STATUS_EM_CONTATO,
     STATUS_NOVO,
@@ -96,10 +95,20 @@ def run_cycle(sheets_client: SheetsClient, gmail_client: GmailClient, template_m
     print(f"\n[>>>] Lead Selecionado: {nome_lead} | Empresa: {empresa_lead} | E-mail: {email_to} (Linha {row_num})")
 
     # Renderiza templates
-    body_html, body_text = template_manager.render(pending_lead["raw_row"], sender_name=SENDER_NAME)
+    subject, body_html, body_text = template_manager.render(pending_lead["raw_row"], sender_name=SENDER_NAME)
 
-    # Assunto personalizado
-    subject = EMAIL_SUBJECT.replace("{empresa}", empresa_lead).replace("{nome}", nome_lead)
+    if subject is None:
+        print(f"[!] Lead {nome_lead} ignorado (CNAE '{pending_lead.get('cnae')}' não mapeado nos templates).")
+        # Marca como ignorado na planilha para não travar a fila
+        try:
+            sheets_client.update_lead_sent(
+                row_number=row_num,
+                send_time_str="---",
+                new_status="Ignorado - CNAE",
+            )
+        except Exception as e:
+            print(f"[ERRO] Falha ao marcar lead como ignorado na linha {row_num}: {e}")
+        return False
 
     # Dispara e-mail via Gmail API
     print(f"[*] Enviando e-mail via Gmail para: {email_to}...")

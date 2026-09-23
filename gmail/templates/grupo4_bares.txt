@@ -1,0 +1,11 @@
+Oi, {nome}, tudo bem?
+
+Bebidas frias (cervejas, refrigerantes, água) já chegam com os impostos pagos da fábrica. Se o fechamento do caixa não separa isso todo mês, a {empresa} está pagando PIS/COFINS em duplicidade no DAS.
+
+É possível recuperar esse valor pago a maior dos últimos 5 anos direto na conta, de forma administrativa.
+
+Faz sentido conversarmos por 5 minutos nesta semana sobre como funciona esse levantamento?
+
+À disposição,
+
+{remetente}

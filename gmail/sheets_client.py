@@ -6,6 +6,7 @@ from config import (
     COL_EMAIL,
     COL_NAME,
     COL_COMPANY,
+    COL_CNAE,
     COL_SEND_TIME,
     COL_STATUS,
     STATUS_NOVO,
@@ -100,6 +101,10 @@ class SheetsClient:
             if any(term in col_clean for term in ["empresa", "negócio", "negocio", "loja", "organização"]):
                 mapping["empresa"] = idx
 
+            # Mapeamento do CNAE
+            if "cnae" in col_clean or col_clean == COL_CNAE.lower():
+                mapping["cnae"] = idx
+
         self.columns_map = mapping
         return mapping
 
@@ -135,6 +140,7 @@ class SheetsClient:
         status_idx = self.columns_map["status"]
         nome_idx = self.columns_map.get("nome")
         empresa_idx = self.columns_map.get("empresa")
+        cnae_idx = self.columns_map.get("cnae")
 
         email_regex = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w+$")
 
@@ -150,12 +156,14 @@ class SheetsClient:
             if email and email_regex.match(email) and is_hora_empty and is_status_pending:
                 nome = row[nome_idx].strip() if (nome_idx is not None and nome_idx < len(row)) else ""
                 empresa = row[empresa_idx].strip() if (empresa_idx is not None and empresa_idx < len(row)) else ""
+                cnae = row[cnae_idx].strip() if (cnae_idx is not None and cnae_idx < len(row)) else ""
 
                 lead_data = {
                     "row_number": row_idx,
                     "email": email,
                     "nome": nome,
                     "empresa": empresa,
+                    "cnae": cnae,
                     "status_atual": status,
                     "raw_row": {headers[i]: row[i] for i in range(min(len(headers), len(row)))},
                 }

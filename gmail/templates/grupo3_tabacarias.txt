@@ -1,0 +1,11 @@
+Oi, {nome}, tudo bem?
+
+Cigarros e bebidas frias têm regras fiscais específicas. Se o sistema da {empresa} não separa essas vendas corretamente, vocês estão pagando impostos que já foram quitados pelo fabricante.
+
+É possível recuperar esse dinheiro dos últimos 5 anos de forma 100% administrativa na Receita Federal, sem ação judicial.
+
+Essa é uma pauta prioritária para você hoje? Se sim, me avise e te explico como funciona.
+
+À disposição,
+
+{remetente}
