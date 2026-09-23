@@ -49,6 +49,8 @@ CNAE_GROUPS = {
 SCOPES = [
     # Acesso completo para ler e atualizar valores na planilha
     "https://www.googleapis.com/auth/spreadsheets",
+    # Acesso ao Google Drive
+    "https://www.googleapis.com/auth/drive",
     # Envio de e-mails em nome do usuário
     "https://www.googleapis.com/auth/gmail.send",
     # Leitura e busca de mensagens na caixa de entrada para checar respostas dos leads
@@ -58,7 +60,7 @@ SCOPES = [
 # Configurações de Envio e Cadência
 INTERVAL_SECONDS = int(os.getenv("INTERVAL_SECONDS", "60"))
 TIMEZONE_NAME = os.getenv("TIMEZONE", "America/Sao_Paulo")
-EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "Diagnóstico Estratégico - {empresa}")
+EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "💡Ei, sua empresa recuperou imposto ?")
 SENDER_NAME = os.getenv("SENDER_NAME", "")
 
 # Nomes esperados de Colunas

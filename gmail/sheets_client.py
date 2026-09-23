@@ -93,18 +93,29 @@ class SheetsClient:
             if "status" in col_clean or col_clean == COL_STATUS.lower():
                 mapping["status"] = idx
 
-            # Mapeamento do Nome
-            if any(term in col_clean for term in ["nome", "contato", "cliente", "lead"]) and "empresa" not in col_clean:
+            # Mapeamento do Nome (garante que não confunda com 'Status do Contato')
+            if any(term in col_clean for term in ["nome", "contato", "cliente", "lead"]) and "empresa" not in col_clean and "status" not in col_clean:
                 mapping["nome"] = idx
 
             # Mapeamento da Empresa
-            if any(term in col_clean for term in ["empresa", "negócio", "negocio", "loja", "organização"]):
+            if any(term in col_clean for term in ["empresa", "negócio", "negocio", "loja", "organização", "razão social", "razao social"]):
                 mapping["empresa"] = idx
+
+            # Mapeamento de Nicho / Segmento
+            if any(term in col_clean for term in ["nicho", "segmento", "ramo", "setor"]):
+                mapping["nicho"] = idx
 
             # Mapeamento do CNAE
             if "cnae" in col_clean or col_clean == COL_CNAE.lower():
                 mapping["cnae"] = idx
 
+            # Mapeamento de Cidade
+            if "cidade" in col_clean or "município" in col_clean or "municipio" in col_clean:
+                mapping["cidade"] = idx
+
+            # Mapeamento de Gancho de Abordagem
+            if "gancho" in col_clean or "abordagem" in col_clean:
+                mapping["gancho"] = idx
         self.columns_map = mapping
         return mapping
 

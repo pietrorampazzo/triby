@@ -19,6 +19,8 @@ lerna-debug.log*
 auth_info_baileys/
 credentials.json
 token.json
+client_secret*.json
+*.json.json
 .env
 *.env.local
 
